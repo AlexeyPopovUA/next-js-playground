@@ -3,20 +3,25 @@ backend:
   phases:
     build:
       commands:
-        - alternatives --set node /usr/bin/node-22
-        - corepack enable && corepack enable pnpm
+        - nvm install 22
+        - nvm use 22
+        - corepack enable
+        - corepack enable pnpm
         - pnpm install --frozen-lockfile
         - pnpm dlx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+
 frontend:
   phases:
     preBuild:
       commands:
-        - alternatives --set node /usr/bin/node-22
-        - corepack enable && corepack enable pnpm
+        - nvm install 22
+        - nvm use 22
+        - corepack enable
+        - corepack enable pnpm
         - pnpm install --frozen-lockfile
     build:
       commands:
-        - npm run build
+        - pnpm build
   artifacts:
     baseDirectory: .next
     files:
@@ -24,5 +29,5 @@ frontend:
   cache:
     paths:
       - .next/cache/**/*
-      - .npm/**/*
       - node_modules/**/*
+      - .pnpm-store/**/*
